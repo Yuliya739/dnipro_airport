@@ -8,18 +8,49 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Main page'),
-            TextButton(
-              onPressed: () =>
-                  Navigator.pushNamed(context, ScoreboardPage.route),
-              child: Text('Scoreboard'),
-            )
+            ScoreboardPart(),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class ScoreboardPart extends StatelessWidget {
+  const ScoreboardPart({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: BoxConstraints(minHeight: 700, maxHeight: 700),
+      child: Stack(
+        children: [
+          Image.asset(
+            'assets/images/scoreboard_background.png',
+            fit: BoxFit.cover,
+          ),
+          Column(
+            children: [
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(40.0),
+                  child: Container(
+                    height: 400,
+                    decoration: BoxDecoration(
+                      color: Colors.black38,
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          )
+        ],
       ),
     );
   }
