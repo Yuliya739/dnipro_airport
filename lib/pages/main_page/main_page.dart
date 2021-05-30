@@ -1,4 +1,5 @@
 import 'package:dnipro_airport/pages/scoreboard_page/scoreboard_page.dart';
+import 'package:dnipro_airport/repos/api_repo.dart';
 import 'package:flutter/material.dart';
 
 class MainPage extends StatelessWidget {
@@ -48,6 +49,10 @@ class ScoreboardPart extends StatelessWidget {
                   ),
                 ),
               ),
+              TextButton(
+                onPressed: () => ApiRepo.of(context).test(),
+                child: Text('test'),
+              )
             ],
           )
         ],
