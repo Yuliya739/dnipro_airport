@@ -1,5 +1,6 @@
 import 'package:dnipro_airport/clients/api_client.dart';
 import 'package:dnipro_airport/exception/api_exception.dart';
+import 'package:dnipro_airport/models/flight_model.dart';
 import 'package:flutter/material.dart';
 
 class ApiRepo extends InheritedWidget {
@@ -17,10 +18,10 @@ class ApiRepo extends InheritedWidget {
     return true;
   }
 
-  Future<String?> test() async {
+  Future<List<FlightModel>?> departuresToday() async {
     try {
-      var data = await _api.test();
-      return data;
+      var data = await _api.departuresToday();
+      return data.map((e) => FlightModel.fromJson(e)).toList();
     } on ApiException catch (exc) {
       print(exc.message);
     }
