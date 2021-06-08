@@ -31,8 +31,15 @@ class ScoreboardPart extends StatelessWidget {
                   future: ApiRepo.of(context).departuresToday(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      return Scoreboard(
-                        data: snapshot.data as List<FlightModel>,
+                      return Theme(
+                        data: ThemeData.dark().copyWith(
+                          textTheme: Theme.of(context).textTheme.apply(
+                                fontFamily: 'Skyfont',
+                              ),
+                        ),
+                        child: Scoreboard(
+                          data: snapshot.data as List<FlightModel>,
+                        ),
                       );
                     }
                     return CircularProgressIndicator();

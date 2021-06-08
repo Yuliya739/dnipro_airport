@@ -32,8 +32,8 @@ class SearchPart extends StatelessWidget {
                   style: Theme.of(context).textTheme.headline5,
                 ),
               ),
-              FractionallySizedBox(
-                widthFactor: 0.9,
+              ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: 500),
                 child: SearchFlightField(
                   onSearchTap: (flightTo, date) {
                     print('To $flightTo at ${date.toIso8601String()}');

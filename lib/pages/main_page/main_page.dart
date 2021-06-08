@@ -26,7 +26,10 @@ class MainPage extends StatelessWidget {
                 ScoreboardPart(key: _scoreboardKey),
                 SearchPart(key: _searchKey),
                 UserInfoPart(key: _userInfoKey),
-                AirportInfoPart(key: _airportInfoKey)
+                Theme(
+                  data: ThemeData.dark(),
+                  child: AirportInfoPart(key: _airportInfoKey),
+                )
               ],
             ),
           ),

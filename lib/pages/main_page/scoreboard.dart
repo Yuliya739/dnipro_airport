@@ -23,7 +23,10 @@ class Scoreboard extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 'Scoreboard',
-                style: Theme.of(context).textTheme.headline4,
+                style: Theme.of(context)
+                    .textTheme
+                    .headline3!
+                    .copyWith(color: Colors.white),
               ),
             ),
             DataTable(
@@ -31,49 +34,85 @@ class Scoreboard extends StatelessWidget {
                 DataColumn(
                     label: Text(
                   'Flight',
-                  style: Theme.of(context).textTheme.subtitle1,
+                  style: Theme.of(context).textTheme.headline4,
                 )),
                 DataColumn(
                     label: Text(
                   'Time',
-                  style: Theme.of(context).textTheme.subtitle1,
+                  style: Theme.of(context).textTheme.headline4,
                 )),
                 DataColumn(
                     label: Text(
                   'Destination',
-                  style: Theme.of(context).textTheme.subtitle1,
+                  style: Theme.of(context).textTheme.headline4,
                 )),
                 // DataColumn(label: Text('Carrier')),
                 DataColumn(
                     label: Text(
                   'Terminal',
-                  style: Theme.of(context).textTheme.subtitle1,
+                  style: Theme.of(context).textTheme.headline4,
                 )),
                 DataColumn(
                     label: Text(
                   'Gate',
-                  style: Theme.of(context).textTheme.subtitle1,
+                  style: Theme.of(context).textTheme.headline4,
                 )),
                 DataColumn(
                     label: Text(
                   'Remark',
-                  style: Theme.of(context).textTheme.subtitle1,
+                  style: Theme.of(context).textTheme.headline4,
                 )),
               ],
               rows: data
                   .map(
                     (e) => DataRow(
                       cells: [
-                        DataCell(Text(e.flightId)),
+                        DataCell(Text(
+                          e.flightId,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline4!
+                              .copyWith(color: Colors.white),
+                        )),
                         DataCell(
-                          Text('${e.estimatedTime.hour}:'
-                              '${e.estimatedTime.minute}'),
+                          Text(
+                            '${e.estimatedTime.hour}:'
+                            '${e.estimatedTime.minute}',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline4!
+                                .copyWith(color: Colors.white),
+                          ),
                         ),
-                        DataCell(Text(e.direction)),
+                        DataCell(Text(
+                          e.direction,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline4!
+                              .copyWith(color: Colors.white),
+                        )),
                         // DataCell(Text(e.airlineId)),
-                        DataCell(Text(e.terminal)),
-                        DataCell(Text(e.gate)),
-                        DataCell(Text(e.remark)),
+                        DataCell(Text(
+                          e.terminal,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline4!
+                              .copyWith(color: Colors.white),
+                        )),
+                        DataCell(Text(
+                          e.gate,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline4!
+                              .copyWith(color: Colors.white),
+                        )),
+                        DataCell(Text(
+                          e.remark,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline4!
+                              .copyWith(color: Colors.white),
+                        )),
                       ],
                     ),
                   )

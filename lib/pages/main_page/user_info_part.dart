@@ -23,36 +23,34 @@ class UserInfoPart extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 _InfoCard(
+                  width: MediaQuery.of(context).size.width / 3.5,
                   image: Image.asset(
                     'assets/images/bag.png',
                     height: 100,
                   ),
-                  info: """You can a self-service terminal or at the airport. 
-
-Choose luggage type
-Hand luggage can be taken on the plane, and checked baggage (check-in bag) is delivered at the airport.
-
-Arrive on time
-To catch a flight, you need to arrive at the airport before check-in, which begins 2 hours before departure.""",
+                  info:
+                      """Show the carrier's representative the documents, go through passport control, security control, and then check in your baggage.""",
                   label: 'Register',
                 ),
                 _InfoCard(
+                  width: MediaQuery.of(context).size.width / 3.5,
                   image: Image.asset(
                     'assets/images/tickets.png',
                     height: 100,
                   ),
                   info:
-                      'infoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfo',
+                      """Hand luggage can be taken on the plane, and checked baggage (check-in bag) is delivered at the airport.""",
                   label: 'Choose luggage type',
                 ),
                 _InfoCard(
+                  width: MediaQuery.of(context).size.width / 3.5,
                   image: Image.asset(
                     'assets/images/plane.png',
                     height: 100,
                   ),
                   info:
-                      'infoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfoinfo',
-                  label: 'Choose luggage type',
+                      """To catch a flight, you need to arrive at the airport before check-in, which begins 2 hours before departure.""",
+                  label: 'Arrive on time',
                 ),
               ],
             )
@@ -67,17 +65,22 @@ class _InfoCard extends StatelessWidget {
   final Image image;
   final String label;
   final String info;
+  final double? width;
+  final double? height;
   const _InfoCard({
     Key? key,
     required this.image,
     required this.info,
     required this.label,
+    this.height,
+    this.width,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlurredContainer(
-      width: MediaQuery.of(context).size.width / 3.5,
+      width: width,
+      height: height,
       color: Colors.white38,
       borderRadius: BorderRadius.circular(30.0),
       child: Padding(
@@ -102,7 +105,10 @@ class _InfoCard extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 20, bottom: 20),
-                  child: Text(info),
+                  child: Text(
+                    info,
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
                 ),
               ],
             ),
