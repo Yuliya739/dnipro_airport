@@ -8,13 +8,15 @@
             "name": "Flutter debug",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "debug"
+            "flutterMode": "debug",
+            "args": ["--web-renderer canvaskit"]
         }, 
         {
             "name": "Flutter release",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release"
+            "flutterMode": "release",
+            "args": ["--web-renderer canvaskit"]
         }, 
     ]
 }

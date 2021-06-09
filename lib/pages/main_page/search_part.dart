@@ -1,10 +1,28 @@
 import 'package:dnipro_airport/components/search_flight_field.dart';
+import 'package:dnipro_airport/pages/scoreboard_page/search_page.dart';
+import 'package:dnipro_airport/pages/scoreboard_page/search_page_provider.dart';
+import 'package:dnipro_airport/repos/api_repo.dart';
 import 'package:flutter/material.dart';
 
 class SearchPart extends StatelessWidget {
   const SearchPart({
     Key? key,
   }) : super(key: key);
+
+  _onSearchTap(BuildContext context, String? flightTo, DateTime? date) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) {
+        return SearchPageProvider(
+          apiRepo: ApiRepo.of(context),
+          child: SearchPage(
+            flightTo: flightTo,
+            departDate: date,
+          ),
+        );
+      }),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +53,11 @@ class SearchPart extends StatelessWidget {
               ConstrainedBox(
                 constraints: BoxConstraints(maxWidth: 500),
                 child: SearchFlightField(
-                  onSearchTap: (flightTo, date) {
-                    print('To $flightTo at ${date.toIso8601String()}');
-                  },
+                  onSearchTap: (flightTo, date) => _onSearchTap(
+                    context,
+                    flightTo,
+                    date,
+                  ),
                 ),
               ),
             ],

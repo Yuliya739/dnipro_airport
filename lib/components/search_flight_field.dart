@@ -4,9 +4,18 @@ import 'package:intl/intl.dart';
 class SearchFlightField extends StatelessWidget {
   final Function(String, DateTime) onSearchTap;
 
-  SearchFlightField({Key? key, required this.onSearchTap}) : super(key: key);
-  final _flightToTextController = TextEditingController();
-  final _departOnTextController = TextEditingController();
+  SearchFlightField({
+    Key? key,
+    required this.onSearchTap,
+    String? flightTo,
+    DateTime? date,
+  }) : super(key: key) {
+    _flightToTextController = TextEditingController(text: flightTo);
+    _departOnTextController = TextEditingController(
+        text: date == null ? null : _dateFormat.format(date));
+  }
+  late final _flightToTextController;
+  late final _departOnTextController;
   final _dateFormat = DateFormat('yyyy-MM-dd');
 
   @override

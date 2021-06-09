@@ -8,7 +8,9 @@ class FlightModel {
   String remark;
   String airportName;
   String direction;
-  String airlineId;
+  String planeId;
+  int travelTime;
+  int coast;
 
   FlightModel({
     required this.flightId,
@@ -20,10 +22,13 @@ class FlightModel {
     required this.remark,
     required this.airportName,
     required this.direction,
-    required this.airlineId,
+    required this.planeId,
+    required this.travelTime,
+    required this.coast,
   });
 
   factory FlightModel.fromJson(Map<String, dynamic> json) {
+    final realTime = json['real_time'];
     return FlightModel(
       flightId: json['flight_id'],
       estimatedTime: DateTime.parse(json['estimated_time']),
@@ -33,8 +38,10 @@ class FlightModel {
       remark: json['remark'],
       airportName: json['airport_name'],
       direction: json['direction'],
-      airlineId: json['airline_id'],
-      realTime: DateTime.parse(json['real_time']),
+      planeId: json['plane_id'],
+      realTime: realTime == null ? null : DateTime.parse(json['real_time']),
+      travelTime: json['travel_time'],
+      coast: json['coast'],
     );
   }
 }
