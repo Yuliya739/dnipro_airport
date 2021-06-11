@@ -10,7 +10,7 @@ class TicketCard extends StatelessWidget {
   final AirlineModel airline;
   final TransplantationModel? transplantation;
   final BorderRadius? borderRadius;
-  final void Function()? onBookPressed;
+  final void Function(String)? onBookPressed;
   TicketCard({
     Key? key,
     required this.flight,
@@ -70,152 +70,162 @@ class TicketCard extends StatelessWidget {
               );
             }),
           ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Row(
+          _infoPartBuilder(context),
+          Divider(),
+          _bottomPartBuilder(context)
+        ],
+      ),
+    );
+  }
+
+  Padding _bottomPartBuilder(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: Row(
+        children: [
+          Spacer(),
+          Text(
+            'The coast: ',
+            style: Theme.of(context)
+                .textTheme
+                .headline5!
+                .copyWith(color: Colors.black),
+          ),
+          Text(
+            '${flight.coast.toString()} \$',
+            style: Theme.of(context)
+                .textTheme
+                .headline4!
+                .copyWith(color: Colors.black),
+          ),
+          SizedBox(width: 20),
+          ElevatedButton(
+            onPressed: onBookPressed == null
+                ? null
+                : () => onBookPressed!(flight.flightId),
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Text('Book now'),
+            ),
+            style: ButtonStyle(
+              shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(3))),
+              backgroundColor:
+                  MaterialStateProperty.all(Color.fromRGBO(45, 199, 49, 1)),
+            ),
+          ),
+          SizedBox(width: 30),
+        ],
+      ),
+    );
+  }
+
+  Padding _infoPartBuilder(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 300, minHeight: 100),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                ConstrainedBox(
-                  constraints: BoxConstraints(maxWidth: 300, minHeight: 100),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                Text.rich(
+                  TextSpan(
                     children: [
-                      Text.rich(
-                        TextSpan(
-                          children: [
-                            TextSpan(text: 'Flight '),
-                            TextSpan(
-                              text: flight.flightId,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText2!
-                                  .copyWith(fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Text(airline.carriageClass),
-                      Text('Carrier ${airline.airlineName}'),
-                    ],
-                  ),
-                ),
-                ConstrainedBox(
-                  constraints: BoxConstraints(maxWidth: 300, minHeight: 100),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Text.rich(
-                        TextSpan(
-                          children: [
-                            TextSpan(text: 'Departure at '),
-                            TextSpan(
-                              text: _timeFormat.format(flight.estimatedTime),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText2!
-                                  .copyWith(fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Text(_dateFormat.format(flight.estimatedTime)),
-                      Text('Dnieper DNK'),
-                    ],
-                  ),
-                ),
-                ConstrainedBox(
-                  constraints: BoxConstraints(maxWidth: 500, minHeight: 100),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Text.rich(
-                        TextSpan(
-                          children: [
-                            TextSpan(text: 'Travel time '),
-                            TextSpan(
-                              text:
-                                  '${Duration(minutes: flight.travelTime).inHours} hours '
-                                  '${Duration(minutes: flight.travelTime).inMinutes - Duration(minutes: flight.travelTime).inHours * 60} minutes',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText2!
-                                  .copyWith(fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
+                      TextSpan(text: 'Flight '),
+                      TextSpan(
+                        text: flight.flightId,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText2!
+                            .copyWith(fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
                 ),
-                ConstrainedBox(
-                  constraints: BoxConstraints(maxWidth: 300, minHeight: 100),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                Text(airline.carriageClass),
+                Text('Carrier ${airline.airlineName}'),
+              ],
+            ),
+          ),
+          ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 300, minHeight: 100),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text.rich(
+                  TextSpan(
                     children: [
-                      Text.rich(
-                        TextSpan(
-                          children: [
-                            TextSpan(text: 'Arrival at '),
-                            TextSpan(
-                              text: _timeFormat.format(_arrivalTime),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText2!
-                                  .copyWith(fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
+                      TextSpan(text: 'Departure at '),
+                      TextSpan(
+                        text: _timeFormat.format(flight.estimatedTime),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText2!
+                            .copyWith(fontWeight: FontWeight.bold),
                       ),
-                      Text(_dateFormat.format(_arrivalTime)),
-                      Text(flight.airportName),
+                    ],
+                  ),
+                ),
+                Text(_dateFormat.format(flight.estimatedTime)),
+                Text('Dnieper DNK'),
+              ],
+            ),
+          ),
+          ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 500, minHeight: 100),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(text: 'Travel time '),
+                      TextSpan(
+                        text:
+                            '${Duration(minutes: flight.travelTime).inHours} hours '
+                            '${Duration(minutes: flight.travelTime).inMinutes - Duration(minutes: flight.travelTime).inHours * 60} minutes',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText2!
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ),
                     ],
                   ),
                 ),
               ],
             ),
           ),
-          Divider(),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: Row(
+          ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 300, minHeight: 100),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Spacer(),
-                Text(
-                  'The coast: ',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline5!
-                      .copyWith(color: Colors.black),
-                ),
-                Text(
-                  '${flight.coast.toString()} \$',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline4!
-                      .copyWith(color: Colors.black),
-                ),
-                SizedBox(width: 20),
-                ElevatedButton(
-                  onPressed: onBookPressed,
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Text('Book now'),
-                  ),
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(3))),
-                    backgroundColor: MaterialStateProperty.all(
-                        Color.fromRGBO(45, 199, 49, 1)),
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(text: 'Arrival at '),
+                      TextSpan(
+                        text: _timeFormat.format(_arrivalTime),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText2!
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ),
+                    ],
                   ),
                 ),
-                SizedBox(width: 30),
+                Text(_dateFormat.format(_arrivalTime)),
+                Text(flight.airportName),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

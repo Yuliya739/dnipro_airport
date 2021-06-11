@@ -1,7 +1,10 @@
+import 'package:dnipro_airport/bloc/order_bloc.dart';
 import 'package:dnipro_airport/bloc/search_bloc.dart';
 import 'package:dnipro_airport/components/search_flight_field.dart';
 import 'package:dnipro_airport/components/ticket_card.dart';
 import 'package:dnipro_airport/components/ticket_card_preloader.dart';
+import 'package:dnipro_airport/pages/book_ticket_dialog_page.dart';
+import 'package:dnipro_airport/repos/api_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -77,6 +80,19 @@ class _ResultsList extends StatelessWidget {
   final void Function(String flightId)? onTicketTap;
   const _ResultsList({Key? key, this.onTicketTap}) : super(key: key);
 
+  void _onBookPressed(BuildContext context, String flightId) {
+    showDialog(
+      context: context,
+      builder: (context) => BlocProvider(
+        create: (context) => OrderBloc(
+            apiRepo: ApiRepo(
+          child: Text('sd'),
+        )),
+        child: BookTicketDialogPage(flightId: flightId),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SearchBloc, SearchState>(
@@ -88,37 +104,41 @@ class _ResultsList extends StatelessWidget {
           return LinearProgressIndicator();
         }
         if (state is SearchSuccess) {
-          return Padding(
-            padding: const EdgeInsets.only(top: 20.0),
-            child: ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: 1000),
-              child: Column(
-                children: state.flights
-                    .map((flight) => Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10.0),
-                          child: TicketCardPreloader(
-                            flight: flight,
-                            builder:
-                                (context, flight, airline, transplantation) {
-                              return TicketCard(
-                                flight: flight,
-                                airline: airline,
-                                transplantation: transplantation,
-                                borderRadius: BorderRadius.circular(30.0),
-                              );
-                            },
-                            errorBuilder: (context, error) =>
-                                Text(error.toString()),
-                            loadBuilder: (context) => LinearProgressIndicator(),
-                          ),
-                        ))
-                    .toList(),
-              ),
-            ),
-          );
+          return _searchSuccessBuilder(state);
         }
         return Text('Unknown SearchBloc state $state');
       },
+    );
+  }
+
+  Padding _searchSuccessBuilder(SearchSuccess state) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20.0),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: 1000),
+        child: Column(
+          children: state.flights
+              .map((flight) => Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    child: TicketCardPreloader(
+                      flight: flight,
+                      builder: (context, flight, airline, transplantation) {
+                        return TicketCard(
+                          flight: flight,
+                          airline: airline,
+                          transplantation: transplantation,
+                          borderRadius: BorderRadius.circular(30.0),
+                          onBookPressed: (flightId) =>
+                              _onBookPressed(context, flightId),
+                        );
+                      },
+                      errorBuilder: (context, error) => Text(error.toString()),
+                      loadBuilder: (context) => LinearProgressIndicator(),
+                    ),
+                  ))
+              .toList(),
+        ),
+      ),
     );
   }
 }

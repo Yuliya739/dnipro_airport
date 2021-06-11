@@ -44,4 +44,25 @@ class ApiRepo extends InheritedWidget {
     }
     return TransplantationModel.fromJson(data);
   }
+
+  Future<String> order({
+    required String flightId,
+    required String lastName,
+    required String firstName,
+    required DateTime dateOfBirth,
+    required String numPassport,
+    required String email,
+    required DateTime validUntil,
+  }) async {
+    final data = await _api.order(
+      flightId: flightId,
+      firstName: firstName,
+      lastName: lastName,
+      dateOfBirth: dateOfBirth,
+      numPassport: numPassport,
+      email: email,
+      validUntil: validUntil,
+    );
+    return data;
+  }
 }
