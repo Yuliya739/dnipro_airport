@@ -1,11 +1,11 @@
 class PlaneModel {
-  String planeId;
+  String? planeId;
   String planeName;
   int kolSeats;
   String airlineId;
 
   PlaneModel({
-    required this.planeId,
+    this.planeId,
     required this.airlineId,
     required this.kolSeats,
     required this.planeName,

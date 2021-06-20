@@ -150,4 +150,28 @@ class ApiClient {
 
     throw ApiException('Error');
   }
+
+  Future<String> addPlane({
+    required String name,
+    required int kolSeats,
+    required String airlineId,
+  }) async {
+    final response = await _dio.post(
+      '$_apiRoute/plane',
+      options: Options(
+        contentType: Headers.formUrlEncodedContentType,
+      ),
+      data: {
+        'airline_id': airlineId,
+        'plane_name': name,
+        'kol_seats': kolSeats,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return response.data!;
+    }
+
+    throw ApiException('Error');
+  }
 }

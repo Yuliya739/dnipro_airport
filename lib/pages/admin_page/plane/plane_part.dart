@@ -1,5 +1,7 @@
 import 'package:dnipro_airport/models/airline_model.dart';
+import 'package:dnipro_airport/models/plane_model.dart';
 import 'package:dnipro_airport/pages/admin_page/plane/bloc/airline_list_bloc.dart';
+import 'package:dnipro_airport/pages/admin_page/plane/bloc/plane_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,6 +23,15 @@ class _PlanePartState extends State<PlanePart> {
     print('_nameController ${_nameController.text}');
     print('_kolSeatsController ${_kolSeatsController.text}');
     print('airline ${_airline?.airlineId} ${_airline?.airlineName}');
+    if (_airline != null) {
+      BlocProvider.of<PlaneBloc>(context).add(PlaneAdd(
+        PlaneModel(
+          airlineId: _airline!.airlineId,
+          kolSeats: int.parse(_kolSeatsController.text),
+          planeName: _nameController.text,
+        ),
+      ));
+    }
   }
 
   @override
@@ -76,9 +87,19 @@ class _PlanePartState extends State<PlanePart> {
             ),
             Padding(
               padding: const EdgeInsets.all(20.0),
-              child: ElevatedButton(
-                onPressed: () => _add(context),
-                child: Text('ADD'),
+              child: BlocBuilder<PlaneBloc, PlaneState>(
+                builder: (context, state) {
+                  if (state is PlaneDone) {
+                    return ElevatedButton(
+                      onPressed: () => _add(context),
+                      child: Text('ADD'),
+                    );
+                  }
+                  return ElevatedButton(
+                    onPressed: null,
+                    child: Text('ADD'),
+                  );
+                },
               ),
             )
           ],

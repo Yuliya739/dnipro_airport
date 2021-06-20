@@ -7,4 +7,11 @@ abstract class PlaneEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class PlaneAdd extends PlaneEvent {}
+class PlaneAdd extends PlaneEvent {
+  final PlaneModel plane;
+
+  PlaneAdd(this.plane);
+
+  @override
+  List<Object> get props => [plane];
+}
