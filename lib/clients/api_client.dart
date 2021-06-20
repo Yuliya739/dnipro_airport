@@ -84,30 +84,12 @@ class ApiClient {
     required String email,
     required DateTime validUntil,
   }) async {
-    // _dio.options..headers["Access-Control-Allow-Origin"] = "*"
-    // ..headers["Access-Control-Allow-Headers"] = "*"
-    // ..headers["Access-Control-Allow-Credentials"] = "true"
-    // ..headers["Access-Control-Allow-Methods"] = "*"
-    // ..headers["Access-Control-Expose-Headers"] =
-    //     "Link,X-Total,X-Per-Page,X-RateLimit-Limit,X-RateLimit-Remaining"
-    // ..headers["Vary"] =
-    //     "Accept-Encoding, Origin,Authorization,client-geo-region";
     final response = await _dio.post(
       '$_apiRoute/orders',
-      // options: Options(method: 'POST', headers: {
-      //   "Access-Control-Allow-Origin": "*",
-      //   "Access-Control-Allow-Headers": "*",
-      //   "Access-Control-Allow-Credentials": "true",
-      //   "Access-Control-Allow-Methods": "*",
-      //   "Access-Control-Expose-Headers":
-      //       "Link,X-Total,X-Per-Page,X-RateLimit-Limit,X-RateLimit-Remaining",
-      //   "Vary": "Accept-Encoding, Origin,Authorization,client-geo-region",
-      //   'Content-Type': 'text/html; charset=utf-8',
-      // }),
       options: Options(
         contentType: Headers.formUrlEncodedContentType,
       ),
-      data: ({
+      data: {
         'flight_id': flightId,
         'last_name': lastName,
         'first_name': firstName,
@@ -115,7 +97,41 @@ class ApiClient {
         'num_passport': numPassport,
         'email': email,
         'valid_until': validUntil.toIso8601String(),
-      }),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return response.data!;
+    }
+
+    throw ApiException('Error while proceeding order');
+  }
+
+  Future<String> addAirline({
+    required String name,
+    required String country,
+    required String iso2,
+    required String iso3,
+    required String iata,
+    required String icao,
+    required String carriageClass,
+    required String callCenter,
+  }) async {
+    final response = await _dio.post(
+      '$_apiRoute/airline',
+      options: Options(
+        contentType: Headers.formUrlEncodedContentType,
+      ),
+      data: {
+        'airline_name': name,
+        'country': country,
+        'iso31661_alpha2': iso2,
+        'iso31661_alpha3': iso3,
+        'iata': iata,
+        'icao': icao,
+        'carriage_class': carriageClass,
+        'call_center': callCenter,
+      },
     );
 
     if (response.statusCode == 200) {

@@ -1,3 +1,5 @@
+import 'package:dnipro_airport/pages/admin_page/admin_page.dart';
+import 'package:dnipro_airport/pages/admin_page/admin_page_provider.dart';
 import 'package:dnipro_airport/pages/main_page/main_page.dart';
 import 'package:dnipro_airport/pages/scoreboard_page/search_page.dart';
 import 'package:flutter/material.dart';
@@ -41,10 +43,11 @@ class App extends StatelessWidget {
           ),
         ),
       ),
-      initialRoute: MainPage.route,
+      initialRoute: AdminPage.route,
       routes: {
         MainPage.route: (_) => MainPage(),
         SearchPage.route: (_) => SearchPage(),
+        AdminPage.route: (_) => AdminPageProvider(child: AdminPage()),
       },
     );
   }

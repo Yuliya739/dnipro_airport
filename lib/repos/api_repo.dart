@@ -65,4 +65,27 @@ class ApiRepo extends InheritedWidget {
     );
     return data;
   }
+
+  Future<String> addAirline({
+    required String name,
+    required String country,
+    required String iso2,
+    required String iso3,
+    required String iata,
+    required String icao,
+    required String carriageClass,
+    required String callCenter,
+  }) async {
+    final data = await _api.addAirline(
+      name: name,
+      country: country,
+      iso2: iso2,
+      iso3: iso3,
+      iata: iata,
+      icao: icao,
+      carriageClass: carriageClass,
+      callCenter: callCenter,
+    );
+    return data;
+  }
 }
