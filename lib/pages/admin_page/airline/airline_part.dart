@@ -1,3 +1,4 @@
+import 'package:dnipro_airport/pages/admin_page/plane/bloc/airline_list_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -133,6 +134,8 @@ class AirlinePart extends StatelessWidget {
               child: BlocBuilder<AirlineBloc, AirlineState>(
                 builder: (context, state) {
                   if (state is AirlineDone) {
+                    BlocProvider.of<AirlineListBloc>(context)
+                        .add(AirlineListRequest());
                     return ElevatedButton(
                       onPressed: () => _add(context),
                       child: Text('ADD'),

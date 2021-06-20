@@ -88,4 +88,9 @@ class ApiRepo extends InheritedWidget {
     );
     return data;
   }
+
+  Future<List<AirlineModel>> airlines() async {
+    final data = await _api.airlines();
+    return data.map((e) => AirlineModel.fromJson(e)).toList();
+  }
 }

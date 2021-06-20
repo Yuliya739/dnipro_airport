@@ -140,4 +140,14 @@ class ApiClient {
 
     throw ApiException('Error while proceeding order');
   }
+
+  Future<List> airlines() async {
+    final response = await _dio.get('$_apiRoute/airline');
+
+    if (response.statusCode == 200) {
+      return response.data;
+    }
+
+    throw ApiException('Error');
+  }
 }
