@@ -102,4 +102,9 @@ class ApiRepo extends InheritedWidget {
 
     return data;
   }
+
+  Future<List<PlaneModel>> planes() async {
+    final data = await _api.planes();
+    return data.map((e) => PlaneModel.fromJson(e)).toList();
+  }
 }

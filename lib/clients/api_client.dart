@@ -174,4 +174,14 @@ class ApiClient {
 
     throw ApiException('Error');
   }
+
+  Future<List> planes() async {
+    final response = await _dio.get('$_apiRoute/plane');
+
+    if (response.statusCode == 200) {
+      return response.data;
+    }
+
+    throw ApiException('Error');
+  }
 }
