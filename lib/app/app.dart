@@ -10,6 +10,9 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      builder: (context, child) => MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: child!),
       theme: ThemeData.light().copyWith(
         colorScheme: ColorScheme(
           primary: Colors.white,
