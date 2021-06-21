@@ -1,10 +1,11 @@
 import 'package:dnipro_airport/bloc/order_bloc.dart';
+import 'package:dnipro_airport/components/order_qr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-class BookTicketDialogPage extends StatelessWidget {
+class BookTicketDialogPage extends StatefulWidget {
   final String flightId;
 
   BookTicketDialogPage({
@@ -12,20 +13,33 @@ class BookTicketDialogPage extends StatelessWidget {
     required this.flightId,
   }) : super(key: key);
 
+  final List<String> _sexOptions = <String>[
+    'Male',
+    'Female',
+  ];
+
+  @override
+  State<BookTicketDialogPage> createState() => _BookTicketDialogPageState();
+}
+
+class _BookTicketDialogPageState extends State<BookTicketDialogPage> {
   final _emailTextEditingController = TextEditingController();
+
   final _lastNameTextEditingController = TextEditingController();
+
   final _firstNameTextEditingController = TextEditingController();
+
   final _dateOfBirthTextEditingController = TextEditingController();
+
   final _passNumTextEditingController = TextEditingController();
+
   final _passDateTextEditingController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
 
   final _dateFormat = DateFormat.yMMMMd();
 
-  static const List<String> _sexOptions = <String>[
-    'Male',
-    'Female',
-  ];
+  String? _orderId;
 
   String? _validateField(String? text) {
     if (text == null || text.isEmpty) {
@@ -37,7 +51,7 @@ class BookTicketDialogPage extends StatelessWidget {
   void _onBookPressed(BuildContext context) {
     if (_formKey.currentState!.validate()) {
       BlocProvider.of<OrderBloc>(context).add(OrderRequest(
-        flightId: flightId,
+        flightId: widget.flightId,
         lastName: _lastNameTextEditingController.text,
         firstName: _firstNameTextEditingController.text,
         dateOfBirth: _dateFormat.parse(_dateOfBirthTextEditingController.text),
@@ -53,7 +67,7 @@ class BookTicketDialogPage extends StatelessWidget {
     return Theme(
       data: ThemeData.light(),
       child: Material(
-        child: _contentBuilder(context),
+        child: SingleChildScrollView(child: _contentBuilder(context)),
       ),
     );
   }
@@ -93,6 +107,13 @@ class BookTicketDialogPage extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 child: BlocBuilder<OrderBloc, OrderState>(
                   builder: (context, state) {
+                    if (state is OrderSuccess) {
+                      WidgetsBinding.instance!.addPostFrameCallback((_) {
+                        setState(() {
+                          _orderId = state.orderId;
+                        });
+                      });
+                    }
                     if (state is OrderSuccess ||
                         state is OrderInitial ||
                         state is OrderInProgress) {
@@ -124,7 +145,19 @@ class BookTicketDialogPage extends StatelessWidget {
                   },
                 ),
               ),
-            )
+            ),
+            _orderId != null
+                ? Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Text('Take a screenshot',
+                            style: Theme.of(context).textTheme.headline3),
+                        OrderQr(orderId: _orderId!),
+                      ],
+                    ),
+                  )
+                : Container(),
           ],
         ),
       ),
@@ -138,10 +171,9 @@ class BookTicketDialogPage extends StatelessWidget {
         Text('Sex'),
         LayoutBuilder(builder: (context, constraints) {
           return Autocomplete<String>(
-            initialValue:
-                TextEditingValue(text: BookTicketDialogPage._sexOptions.first),
+            initialValue: TextEditingValue(text: widget._sexOptions.first),
             optionsBuilder: (textEditingValue) {
-              return BookTicketDialogPage._sexOptions;
+              return widget._sexOptions;
             },
             optionsViewBuilder: (context, onSelected, options) => Align(
               alignment: Alignment.topLeft,

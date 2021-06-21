@@ -16,7 +16,7 @@ class TransplantationModel {
   factory TransplantationModel.fromJson(Map<String, dynamic> json) {
     return TransplantationModel(
       transplantationId: json['transplantation_id'],
-      transplantationTime: json['transplantation_time'],
+      transplantationTime: DateTime.parse(json['transplantation_time']),
       gate: json['gate'],
       companyTransfer: json['company_transfer'],
       flightId: json['flight_id'],
