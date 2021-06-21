@@ -1,5 +1,7 @@
+import 'package:dnipro_airport/models/transplantation_model.dart';
+
 class FlightModel {
-  String flightId;
+  String? flightId;
   DateTime estimatedTime;
   bool isDeparture;
   DateTime? realTime;
@@ -10,10 +12,11 @@ class FlightModel {
   String direction;
   String planeId;
   int travelTime;
-  int coast;
+  double coast;
+  TransplantationModel? transfer;
 
   FlightModel({
-    required this.flightId,
+    this.flightId,
     required this.estimatedTime,
     required this.isDeparture,
     this.realTime,
@@ -25,6 +28,7 @@ class FlightModel {
     required this.planeId,
     required this.travelTime,
     required this.coast,
+    this.transfer,
   });
 
   factory FlightModel.fromJson(Map<String, dynamic> json) {

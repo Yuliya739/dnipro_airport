@@ -1,16 +1,16 @@
 class TransplantationModel {
-  String transplantationId;
+  String? transplantationId;
   DateTime transplantationTime;
   String gate;
   String companyTransfer;
-  String flightId;
+  String? flightId;
 
   TransplantationModel({
-    required this.transplantationId,
+    this.transplantationId,
     required this.transplantationTime,
     required this.gate,
     required this.companyTransfer,
-    required this.flightId,
+    this.flightId,
   });
 
   factory TransplantationModel.fromJson(Map<String, dynamic> json) {

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:dnipro_airport/exception/api_exception.dart';
+import 'package:dnipro_airport/models/flight_model.dart';
 
 class ApiClient {
   final _dio = Dio();
@@ -180,6 +181,70 @@ class ApiClient {
 
     if (response.statusCode == 200) {
       return response.data;
+    }
+
+    throw ApiException('Error');
+  }
+
+  Future<String> addFlight({
+    required bool isDeparture,
+    required DateTime time,
+    required String direction,
+    required String terminal,
+    required String planeId,
+    required String gate,
+    required String airportName,
+    required int travelTime,
+    required double coast,
+    required String remark,
+  }) async {
+    final response = await _dio.post(
+      '$_apiRoute/flight',
+      options: Options(
+        contentType: Headers.formUrlEncodedContentType,
+      ),
+      data: <String, dynamic>{
+        'is_departure': isDeparture,
+        'estimated_time': time.toIso8601String(),
+        'direction': direction,
+        'terminal': terminal,
+        'plane_id': planeId,
+        'gate': gate,
+        'remark': remark,
+        'airport_name': airportName,
+        'travel_time': travelTime,
+        'coast': coast,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return response.data!;
+    }
+
+    throw ApiException('Error');
+  }
+
+  Future<String> addTransplantation({
+    required String gate,
+    required DateTime time,
+    required String company,
+    required String flightId,
+  }) async {
+    final response = await _dio.post(
+      '$_apiRoute/trans',
+      options: Options(
+        contentType: Headers.formUrlEncodedContentType,
+      ),
+      data: {
+        'time': time.toIso8601String(),
+        'gate': gate,
+        'company_transfer': company,
+        'flight_id': flightId,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return response.data!;
     }
 
     throw ApiException('Error');

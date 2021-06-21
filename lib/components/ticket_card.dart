@@ -102,7 +102,7 @@ class TicketCard extends StatelessWidget {
           ElevatedButton(
             onPressed: onBookPressed == null
                 ? null
-                : () => onBookPressed!(flight.flightId),
+                : () => onBookPressed!(flight.flightId!),
             child: Padding(
               padding: const EdgeInsets.all(10.0),
               child: Text('Book now'),

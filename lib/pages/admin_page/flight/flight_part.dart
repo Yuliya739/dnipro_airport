@@ -1,5 +1,8 @@
 import 'package:dnipro_airport/models/airline_model.dart';
+import 'package:dnipro_airport/models/flight_model.dart';
 import 'package:dnipro_airport/models/plane_model.dart';
+import 'package:dnipro_airport/models/transplantation_model.dart';
+import 'package:dnipro_airport/pages/admin_page/flight/bloc/flight_bloc.dart';
 import 'package:dnipro_airport/pages/admin_page/plane/bloc/airline_list_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,7 +36,38 @@ class _FlightPartState extends State<FlightPart> {
 
   final _dateFormat = DateFormat('yyyy-MM-dd');
 
-  void _add(BuildContext context) {}
+  void _add(BuildContext context) {
+    TransplantationModel? trans;
+    if (_hasTrans) {
+      trans = TransplantationModel(
+        transplantationTime: _dateFormat.parse(_transDateController.text).add(
+            Duration(
+                hours: int.parse(_transTimeController.text.split(":")[0]),
+                minutes: int.parse(
+                    _transTimeController.text.split(":")[1].split(' ')[0]))),
+        gate: _transGateController.text,
+        companyTransfer: _transCompanyController.text,
+      );
+    }
+    BlocProvider.of<FlightBloc>(context).add(FlightAdd(
+      FlightModel(
+        airportName: _airportController.text,
+        coast: double.tryParse(_coastController.text) ?? 0.0,
+        direction: _directionController.text,
+        estimatedTime: _dateFormat.parse(_dateController.text).add(Duration(
+            hours: int.parse(_timeController.text.split(":")[0]),
+            minutes:
+                int.parse(_timeController.text.split(":")[1].split(' ')[0]))),
+        gate: _gateController.text,
+        isDeparture: _isDeparture,
+        planeId: _plane!.planeId!,
+        remark: 'departs at ${_timeController.text}',
+        terminal: _terminalController.text,
+        travelTime: int.parse(_travelTimeController.text),
+        transfer: trans,
+      ),
+    ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -205,9 +239,19 @@ class _FlightPartState extends State<FlightPart> {
             Visibility(visible: _hasTrans, child: _buildTransfer(context)),
             Padding(
               padding: const EdgeInsets.all(20.0),
-              child: ElevatedButton(
-                onPressed: () => _add(context),
-                child: Text('ADD'),
+              child: BlocBuilder<FlightBloc, FlightState>(
+                builder: (context, state) {
+                  if (state is FlightDone) {
+                    return ElevatedButton(
+                      onPressed: () => _add(context),
+                      child: Text('ADD'),
+                    );
+                  }
+                  return ElevatedButton(
+                    onPressed: null,
+                    child: Text('ADD'),
+                  );
+                },
               ),
             )
           ],

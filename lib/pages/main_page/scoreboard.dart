@@ -68,7 +68,7 @@ class Scoreboard extends StatelessWidget {
                     (e) => DataRow(
                       cells: [
                         DataCell(Text(
-                          e.flightId,
+                          e.flightId!,
                           style: Theme.of(context)
                               .textTheme
                               .headline4!

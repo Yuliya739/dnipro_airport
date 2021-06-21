@@ -1,4 +1,5 @@
 import 'package:dnipro_airport/pages/admin_page/airline/bloc/airline_bloc.dart';
+import 'package:dnipro_airport/pages/admin_page/flight/bloc/flight_bloc.dart';
 import 'package:dnipro_airport/pages/admin_page/flight/bloc/plane_list_bloc.dart';
 import 'package:dnipro_airport/pages/admin_page/plane/bloc/airline_list_bloc.dart';
 import 'package:dnipro_airport/pages/admin_page/plane/bloc/plane_bloc.dart';
@@ -37,6 +38,13 @@ class AdminPageProvider extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => PlaneListBloc(
+            ApiRepo(
+              child: Container(),
+            ),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => FlightBloc(
             ApiRepo(
               child: Container(),
             ),

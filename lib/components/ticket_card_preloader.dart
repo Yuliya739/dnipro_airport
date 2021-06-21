@@ -21,7 +21,7 @@ class TicketCardPreloader extends StatelessWidget {
   Future<List> _loadData(BuildContext context) async {
     final airline = ApiRepo.of(context).airlineByPlane(flight.planeId);
     final transplantation =
-        ApiRepo.of(context).transplantation(flight.flightId);
+        ApiRepo.of(context).transplantation(flight.flightId!);
 
     return await Future.wait([airline, transplantation]);
   }
